@@ -6,6 +6,7 @@ from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 
 
 class Game:
+
     def __init__(self):
         pygame.init()
         pygame.display.set_caption(TITLE)
@@ -16,24 +17,33 @@ class Game:
         self.game_speed = 20
         self.x_pos_bg = 0
         self.y_pos_bg = 380
+        self.paused = False
 
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
 
     def run(self):
-        # Game loop: events - update - draw
         self.playing = True
         while self.playing:
             self.events()
+            if self.paused:
+                self.clock.tick(FPS)
+                continue
             self.update()
             self.draw()
+
         pygame.quit()
 
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.playing = False
-
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    self.paused = not self.paused
+                elif event.key == pygame.K_c:
+                    self.paused = False
+            
     def update(self):
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
@@ -41,7 +51,7 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))
+        self.screen.fill((0, 0, 0))
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
