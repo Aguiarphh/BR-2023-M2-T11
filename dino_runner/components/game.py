@@ -1,6 +1,6 @@
 import pygame
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, CLOUD
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 
@@ -19,6 +19,11 @@ class Game:
         self.game_speed = 20
         self.x_pos_bg = 0
         self.y_pos_bg = 380
+        self.cloud_speed = 10 
+        self.cloud_x1 = 200 
+        self.cloud_y1 = 100  
+        self.cloud_x2 = 600  
+        self.cloud_y2 = 50
         self.score = 0
         self.death_count = 0
         self.paused = False
@@ -37,7 +42,7 @@ class Game:
 
     def run(self):
         self.playing = True
-        self.obstacle_manager.reset_obstacles()
+        self.reset_game()
         while self.playing:
             self.events()
             if self.paused:
@@ -46,7 +51,11 @@ class Game:
             self.update()
             self.draw()
 
-        
+    def reset_game(self):
+        self.score = 0
+        self.game_speed = 20
+        self.obstacle_manager.reset_obstacles()
+        self.player.reset_dinosaur()
 
     def events(self):
         for event in pygame.event.get():
@@ -87,6 +96,15 @@ class Game:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
+
+        self.screen.blit(CLOUD, (self.cloud_x1, self.cloud_y1))  # desenho da primeira nuvem
+        self.screen.blit(CLOUD, (self.cloud_x2, self.cloud_y2))  # desenho da segunda nuvem
+        if self.cloud_x1 < -64: #largura da nuvem
+            self.cloud_x1 = SCREEN_WIDTH
+        if self.cloud_x2 < -64: 
+            self.cloud_x2 = SCREEN_WIDTH
+        self.cloud_x1 -= self.cloud_speed # movendo a nuvem para a esquerda
+        self.cloud_x2 -= self.cloud_speed 
 
     def draw_score(self):
         font = pygame.font.Font(FONT_STYLE, 22)
