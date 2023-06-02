@@ -24,16 +24,28 @@ class ObstacleManager:
             elif option == 3:
                 self.obstacles.append(Bird(BIRD[random.randint(0,1)]))
             
+        if game.power == "time" and game.collisor == 1:
+            game.game_speed = 10
+        
         for obstacle in self.obstacles:
             obstacle.update(game.game_speed, self.obstacles)
-            if game.player.dino_rect.colliderect(obstacle.rect):
-                if not game.player.has_power_up:
-                    pygame.time.delay(500)
-                    game.playing = False
-                    game.death_count += 1
-                    break
+            if game.player.dino_rect.colliderect(obstacle.rect) and game.player.invisible == False:
+                if not game.player.has_power_up or game.player.type == "time":
+                    game.heart -= 1
+                    game.player.invisible = False
+                    game.player.invisible_ticke = 60
                 else:
-                    self.obstacles.remove(obstacle)
+                    if game.player.type == "hammer":
+                        self.obstacles.remove(obstacle)
+                    else: 
+                        continue
+                    
+            if game.heart == -1:
+                pygame.time.delay(500)
+                game.playing = False
+                game.death_count+=1
+                game.lives -= 1
+                break 
 
     def draw(self, screen):
         for obstacle in self.obstacles:

@@ -1,11 +1,11 @@
 import pygame
 from pygame.sprite import Sprite
 
-from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, SCREEN_WIDTH, DEFAULT_TYPE, SHIELD_TYPE, RUNNING_SHIELD, DUCKING_SHIELD,JUMPING_SHIELD, HAMMER_TYPE, RUNNING_HAMMER, DUCKING_HAMMER, JUMPING_HAMMER
+from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, SCREEN_WIDTH, DEFAULT_TYPE, SHIELD_TYPE, RUNNING_SHIELD, DUCKING_SHIELD,JUMPING_SHIELD, HAMMER_TYPE, RUNNING_HAMMER, DUCKING_HAMMER, JUMPING_HAMMER, TIME_DECREASE_TYPE
 
-RUN_IMG = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER}
-DUCK_IMG = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER}
-JUMP_IMG = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER}
+RUN_IMG = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER, TIME_DECREASE_TYPE: RUNNING}
+DUCK_IMG = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER, TIME_DECREASE_TYPE: DUCKING}
+JUMP_IMG = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER, TIME_DECREASE_TYPE: JUMPING}
 
 X_POS = 80
 Y_POS = 310
@@ -27,6 +27,8 @@ class Dinosaur(Sprite):
         self.dino_duck = False
         self.dino_run = True
         self.has_power_up = False
+        self.invisible = False
+        self.invisible_ticke = 0
 
     def update(self, user_input):
         if self.dino_run:
@@ -61,6 +63,12 @@ class Dinosaur(Sprite):
         
         if self.step_index > 9:
             self.step_index = 0
+        
+        if self.invisible_ticke > 0:
+            self.invisible_ticke -= 2
+            self.invisible  = True
+        else:
+            self.invisible = False
 
     def run(self):
         self.image = RUN_IMG[self.type][self.step_index//5]

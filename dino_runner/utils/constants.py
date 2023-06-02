@@ -71,6 +71,9 @@ BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
+TIME_DECREASE = pygame.image.load(os.path.join(IMG_DIR, 'Other/Reset.png'))
+
 DEFAULT_TYPE = "default"
 SHIELD_TYPE = "shield"
 HAMMER_TYPE = "hammer"
+TIME_DECREASE_TYPE = "time"

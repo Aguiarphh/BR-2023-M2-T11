@@ -2,6 +2,7 @@ import random
 
 from dino_runner.utils.constants import SCREEN_WIDTH
 
+
 class PowerUp:
     def __init__(self, image, type):
         self.image = image
@@ -11,7 +12,7 @@ class PowerUp:
         self.rect.y = random.randint(125,175)
         
         self.start_time = 0
-        self.duration = random.randint(5,10)
+        self.duration = random.randint(5,7)
     
     def update(self, game_speed, power_ups):
         self.rect.x -= game_speed
@@ -21,3 +22,4 @@ class PowerUp:
         
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+        
