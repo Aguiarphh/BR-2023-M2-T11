@@ -1,11 +1,11 @@
 import pygame
 from pygame.sprite import Sprite
 
-from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, SCREEN_WIDTH, DEFAULT_TYPE
+from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING, SCREEN_WIDTH, DEFAULT_TYPE, SHIELD_TYPE, RUNNING_SHIELD, DUCKING_SHIELD,JUMPING_SHIELD, HAMMER_TYPE, RUNNING_HAMMER, DUCKING_HAMMER, JUMPING_HAMMER
 
-RUN_IMG = {DEFAULT_TYPE: RUNNING}
-DUCK_IMG = {DEFAULT_TYPE: DUCKING}
-JUMP_IMG = {DEFAULT_TYPE: JUMPING}
+RUN_IMG = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER}
+DUCK_IMG = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER}
+JUMP_IMG = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER}
 
 X_POS = 80
 Y_POS = 310
@@ -26,6 +26,7 @@ class Dinosaur(Sprite):
         self.dino_jump = False
         self.dino_duck = False
         self.dino_run = True
+        self.has_power_up = False
 
     def update(self, user_input):
         if self.dino_run:
@@ -45,11 +46,11 @@ class Dinosaur(Sprite):
             self.dino_run = True
 
         if user_input[pygame.K_LEFT]:
-            self.x_vel = -5  # mover para a direita
+            self.x_vel = -5 
         elif user_input[pygame.K_RIGHT]:
-            self.x_vel = 5  # mover para a esquerda
+            self.x_vel = 5  
         else:
-            self.x_vel = 0  # para de se mover
+            self.x_vel = 0
         
         if self.dino_rect.x < 0:
             self.dino_rect.x = 0   #  limitando o dino de acordo com a largura da tela
@@ -63,7 +64,6 @@ class Dinosaur(Sprite):
 
     def run(self):
         self.image = RUN_IMG[self.type][self.step_index//5]
- 
         self.dino_rect.y = Y_POS
         self.step_index += 1
 
